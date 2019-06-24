@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
 
-> a `materialistic, elegant, gradient, utility` widget library for Flutter.
+> materialistic elegant gradient utility Widget Library for Flutter
 
 - Material Design
 - Simple & Lightweight
