@@ -1,111 +1,297 @@
+import 'package:megu/megu.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+final List<String> imgList = [
+  'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
+  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
+  'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+];
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+void main() => runApp(VidreamDemo());
+
+final Widget placeholder = Container(color: Colors.grey);
+
+final List child = map<Widget>(
+  imgList,
+  (index, i) {
+    return Container(
+      margin: EdgeInsets.all(5.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        child: Stack(children: <Widget>[
+          Image.network(i, fit: BoxFit.cover, width: 1000.0),
+          Positioned(
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(200, 0, 0, 0),
+                    Color.fromARGB(0, 0, 0, 0)
+                  ],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                ),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: Text(
+                'No. $index image',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ]),
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
+  },
+).toList();
+
+List<T> map<T>(List list, Function handler) {
+  List<T> result = [];
+  for (var i = 0; i < list.length; i++) {
+    result.add(handler(i, list[i]));
   }
+
+  return result;
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class CarouselWithIndicator extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _CarouselWithIndicatorState createState() => _CarouselWithIndicatorState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
+  int _current = 0;
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+    return Column(children: [
+      Vidream(
+        items: child,
+        autoPlay: true,
+        enlargeCenterPage: true,
+        aspectRatio: 2.0,
+        onPageChanged: (index) {
+          setState(() {
+            _current = index;
+          });
+        },
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: map<Widget>(
+          imgList,
+          (index, url) {
+            return Container(
+              width: 8.0,
+              height: 8.0,
+              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _current == index
+                      ? Color.fromRGBO(0, 0, 0, 0.9)
+                      : Color.fromRGBO(0, 0, 0, 0.4)),
+            );
+          },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    ]);
+  }
+}
+
+class VidreamDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    //Manually operated Carousel
+    final Vidream manualVidreamDemo = Vidream(
+      items: child,
+      autoPlay: false,
+      enlargeCenterPage: true,
+      viewportFraction: 0.9,
+      aspectRatio: 2.0,
+    );
+
+    //Auto playing carousel
+    final Vidream autoPlayDemo = Vidream(
+      viewportFraction: 0.9,
+      aspectRatio: 2.0,
+      autoPlay: true,
+      enlargeCenterPage: true,
+      items: imgList.map(
+        (url) {
+          return Container(
+            margin: EdgeInsets.all(5.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              child: Image.network(
+                url,
+                fit: BoxFit.cover,
+                width: 1000.0,
+              ),
+            ),
+          );
+        },
+      ).toList(),
+    );
+
+    //Button controlled carousel
+    Widget buttonDemo() {
+      final basicSlider = Vidream(
+        items: child,
+        autoPlay: false,
+        enlargeCenterPage: true,
+        viewportFraction: 0.9,
+        aspectRatio: 2.0,
+      );
+      return Column(children: [
+        basicSlider,
+        Row(children: [
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              child: RaisedButton(
+                onPressed: () => basicSlider.previousPage(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.linear),
+                child: Text('prev slider'),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              child: RaisedButton(
+                onPressed: () => basicSlider.nextPage(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.linear),
+                child: Text('next slider'),
+              ),
+            ),
+          ),
+        ]),
+      ]);
+    }
+
+    //Pages covers entire carousel
+    final Vidream coverScreenExample = Vidream(
+      viewportFraction: 1.0,
+      aspectRatio: 2.0,
+      autoPlay: false,
+      enlargeCenterPage: false,
+      items: map<Widget>(
+        imgList,
+        (index, i) {
+          return Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(image: NetworkImage(i), fit: BoxFit.cover),
+            ),
+          );
+        },
+      ),
+    );
+
+    //User input pauses carousels automatic playback
+    final Vidream touchDetectionDemo = Vidream(
+      viewportFraction: 0.9,
+      aspectRatio: 2.0,
+      autoPlay: true,
+      enlargeCenterPage: true,
+      pauseAutoPlayOnTouch: Duration(seconds: 3),
+      items: imgList.map(
+        (url) {
+          return Container(
+            margin: EdgeInsets.all(5.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              child: Image.network(
+                url,
+                fit: BoxFit.cover,
+                width: 1000.0,
+              ),
+            ),
+          );
+        },
+      ).toList(),
+    );
+
+    //Non-looping manual Carousel
+    final Vidream nonLoopingCarousel = Vidream(
+      items: child,
+      enableInfiniteScroll: false,
+      autoPlay: false,
+      enlargeCenterPage: true,
+      viewportFraction: 0.9,
+      aspectRatio: 2.0,
+    );
+
+    //Vertical carousel
+    final Vidream verticalScrollCarousel = Vidream(
+      scrollDirection: Axis.vertical,
+      aspectRatio: 2.0,
+      autoPlay: true,
+      enlargeCenterPage: true,
+      viewportFraction: 0.9,
+      pauseAutoPlayOnTouch: Duration(seconds: 3),
+      items: imgList.map(
+        (url) {
+          return Container(
+            margin: EdgeInsets.all(5.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              child: Image.network(
+                url,
+                fit: BoxFit.cover,
+                width: 1000.0,
+              ),
+            ),
+          );
+        },
+      ).toList(),
+    );
+
+    //create full screen Carousel with context
+    Vidream getFullScreenCarousel(BuildContext mediaContext) {
+      return Vidream(
+        autoPlay: true,
+        viewportFraction: 1.0,
+        aspectRatio: MediaQuery.of(mediaContext).size.aspectRatio,
+        items: imgList.map(
+          (url) {
+            return Container(
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                child: Image.network(
+                  url,
+                  fit: BoxFit.cover,
+                  width: 1000.0,
+                ),
+              ),
+            );
+          },
+        ).toList(),
+      );
+    }
+
+    return MaterialApp(
+      title: 'demo',
+      home: Scaffold(
+        body: Builder(
+          builder: (context) {
+            return Column(children: [
+              getFullScreenCarousel(context),
+            ]);
+          },
+        ),
+      ),
     );
   }
 }
