@@ -5,6 +5,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+/// Code taken from https://github.com/serenader2014/flutter_carousel_slider/blob/master/lib/carousel_slider.dart
+
 class Vidream extends StatefulWidget {
   Vidream(
       {@required this.items,
