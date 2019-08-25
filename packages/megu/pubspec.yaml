@@ -2,7 +2,7 @@ name: megu
 description: A new Flutter package project.
 version: 0.0.2
 author: Shun Kakinoki
-homepage: https://github.com/shunkakinoki/megug
+homepage: https://github.com/shunkakinoki/megu
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
